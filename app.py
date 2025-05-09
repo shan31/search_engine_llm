@@ -4,6 +4,9 @@ from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
 from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun,DuckDuckGoSearchRun
 from langchain.agents import initialize_agent,AgentType
 from langchain.callbacks import StreamlitCallbackHandler
+from duckduckgo_search import DuckDuckGoSearchException
+import time
+
 
 import os
 from dotenv import load_dotenv
@@ -38,6 +41,36 @@ search = DuckDuckGoSearchRun(
     name="Search",
     description="Search DuckDuckGo for a query and return the first result.",
 )
+
+# Wrap the underlying _run method to handle rate limits
+
+original_search_run = search._run
+
+
+
+def throttled_search_run(query):
+
+    delay = 1
+
+    for attempt in range(3):
+
+        try:
+
+            time.sleep(delay)
+
+            return original_search_run(query)
+
+        except DuckDuckGoSearchException as e:
+
+            st.sidebar.info(f"[Search retry {attempt+1}] Rate limited, retrying in {delay}s.")
+
+            delay *= 2
+
+    return "Search service temporarily unavailable due to rate limits."
+
+
+
+search._run = throttled_search_run
 
 st.title("Langchain Agent with Groq LLM")
 # """
