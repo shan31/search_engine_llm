@@ -1,0 +1,26 @@
+name: 🚀 Deploy to HF Space
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure Git for HF push
+        run: |
+          git config --global user.name "shan31"
+          git config --global user.email "shanmugam.gow@gmail.com"
+
+      - name: Push to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          # update origin to include token for authentication
+          git remote set-url origin \
+            https://Shanmugam31:${HF_TOKEN}@huggingface.co/spaces/Shanmugam31/search_engine_llm
+          git push origin main --force
