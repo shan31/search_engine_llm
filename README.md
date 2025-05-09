@@ -1,7 +1,9 @@
+---
 license: apache-2.0
 title: Search Engine
 sdk: streamlit
-emoji: 🏆
+emoji: 🏃
 colorFrom: red
-colorTo: blue
+colorTo: yellow
 short_description: Search Engine With LLM
+---
