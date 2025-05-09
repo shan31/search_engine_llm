@@ -4,7 +4,7 @@ from langchain_community.utilities import ArxivAPIWrapper,WikipediaAPIWrapper
 from langchain_community.tools import ArxivQueryRun,WikipediaQueryRun,DuckDuckGoSearchRun
 from langchain.agents import initialize_agent,AgentType
 from langchain.callbacks import StreamlitCallbackHandler
-from duckduckgo_search import DuckDuckGoSearchException
+from duckduckgo_search.exceptions import DuckDuckGoSearchException
 import time
 
 
